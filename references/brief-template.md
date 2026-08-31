@@ -45,19 +45,39 @@ uniquely at stake here that is not at stake elsewhere.>
 
 ## THE WORKFLOW — how every task runs
 
-**1. Read the brief — all of it.**
+**The shape: research hard, build to the end of the package, report ONCE.**
+Not research → report → wait → build → report. Every extra round trip costs a
+relay and costs you the context you had loaded.
 
-**2. RESEARCH FIRST. Do not start building.**
-- **The problem:** reproduce it. Verify the brief against the actual code.
+**1. Read the brief — all of it**, including DECISIONS and DEFAULTS below. Most
+of what you would ask is already answered there.
+
+**2. RESEARCH HARD — this phase earns the rest.**
+- **The problem:** reproduce it. Verify every claim against the actual code.
   **Briefs are regularly wrong.** If you disagree after reading the code, say so
   and say why. That is the job, not insubordination.
 - **The approach:** confirm the library, API or pattern is the CURRENT
-  well-supported way — not what was current at training time. Check real docs
-  and real version numbers. A confident stale answer is worse than a slow one.
+  well-supported way — not what was current at training time. Check real docs and
+  real version numbers. A confident stale answer is worse than a slow one.
+- **The whole package**, before building any of it. Finding the second unknown
+  after building around the first is what forces a mid-build stop.
 
-**3. Build it.** Prove every guard: re-introduce the defect, watch the test go
-RED, restore, watch it go green. Say so in the commit body. Then grep for the
-sibling call site.
+**3. BUILD EVERYTHING YOU CAN.** Finish the package. If one item is blocked,
+**build the rest anyway** and report the blocker at the end alongside the work
+you completed. Do not stop the package on one question.
+
+Prove every guard: re-introduce the defect, watch the test go RED, restore, watch
+it go green. Say so in the commit body. Then grep for the sibling call site.
+
+**3b. Stop mid-package for exactly two reasons:**
+- **You need something you do not own** — a shared type, a route, an env var in
+  another domain. Build around it if you honestly can; if not, stop.
+- **The choice is irreversible and this brief did not decide it** — data
+  destroyed, money moved, something published, a contract others depend on.
+
+Everything else: **take the default below, or the most conservative option, note
+it, and keep building.** Never stop to ask what you can settle by running a
+command.
 
 **4. Commit to YOUR OWN BRANCH. Never push.**
 - Commit as you go; the message carries the mechanism and the mutation.
@@ -101,9 +121,52 @@ restate the implementation?).
 **Write down what you learn** — entry points, invariants, landmines, anything a
 comment claims that the code does not do. That is your map.
 
-Then **STOP and post a status**: what you read, the biggest risk you found, one
-live check you actually ran, your proposed first move. **Do not edit before the
-user replies.**
+<For the FIRST brief on an existing codebase only: stop after the read and post a
+status — what you read, the biggest risk you found, one live check you actually
+ran, your proposed first move. That one pause is worth it, because it is where a
+wrong domain boundary gets caught cheaply.
+
+For EVERY brief after that: do not stop. Research, build the package, report once.>
+
+---
+
+## ⭐ DECISIONS ALREADY MADE — do not re-open these
+
+<Every choice the CTO has settled, WITH ITS REASON. A ruling without a reason
+gets re-litigated; a ruling with one gets followed. Include the ones that seem
+obvious — they are not obvious to someone who has not read what the CTO read.>
+
+- **<decision>** — because <reason>.
+
+## ⭐ DEFAULTS — proceed without asking
+
+<For every judgement call that can be anticipated: "If X, do Y. Do not ask."
+This is the highest-leverage section in the brief. Where the CTO does not know,
+there is still a default, marked provisional — a default that turns out wrong
+costs one revision; a question costs a round trip AND the same revision.>
+
+- **If <situation>** → <do this>. Do not ask.
+- **If <situation>** → <do this>. Provisional; flag it in your turn if it bites.
+
+## ⭐ CONTRACTS WITH OTHER DOMAINS — fixed before anyone builds
+
+<Every shared type, endpoint shape, or event crossing a domain boundary, decided
+UP FRONT. This is the most common mid-build blocker: one instance needs a field
+another owns and both stall. Name them here, in all four briefs, and nobody
+blocks.>
+
+| Contract | Shape | Owner | Consumers |
+|---|---|---|---|
+
+## OUT OF SCOPE FOR THIS PACKAGE
+
+<Explicit. An instance that does not know where its package ends either stops to
+ask or quietly widens it.>
+
+## DEFINITION OF DONE
+
+<What "finished" means for this package, so the instance knows when to report
+rather than guessing.>
 
 ---
 

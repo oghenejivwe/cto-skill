@@ -148,26 +148,91 @@ Every brief carries, in this order:
    code; work reported wrongly is work the user cannot use.
 4. **Read every line you own**, with the actual line count. Not a sample.
 5. **The domain** — paths, what is already true, known traps, first moves.
+6. **DECISIONS AND DEFAULTS** — see below. This is the section that decides
+   whether the build runs or stalls.
 
-Then **stop and report a status** before editing anything.
+### ⭐ Front-load the brief. Every question you leave open costs a round trip.
+
+**A brief that triggers three questions has failed, even if everything in it is
+true.** The owner has to relay each one, the instance idles, and the context it
+had loaded goes cold. Spend the effort here instead.
+
+Before you hand a brief over, walk it as the instance and ask: *what would I have
+to come back and ask?* Then answer all of it in the brief:
+
+- **DECISIONS ALREADY MADE.** Every choice you have settled, **with its reason**.
+  A ruling without a reason gets re-litigated; a ruling with one gets followed.
+  Include the ones you think are obvious — they are not obvious to someone who
+  has not read what you read.
+- **DEFAULTS — proceed without asking.** For every judgement call you can
+  anticipate: *"If X, do Y. Do not ask."* This is the single highest-leverage
+  part of the brief. Where you genuinely do not know, still give a default and
+  say it is provisional: **a default that turns out wrong costs one revision; a
+  question costs a round trip and gets the same revision anyway.**
+- **THE CONTRACTS BETWEEN DOMAINS, DECIDED UP FRONT.** Before anyone builds,
+  name every shared type, endpoint shape and event that crosses a domain
+  boundary, and fix them. **This is the most common mid-build blocker**: one
+  instance needs a field another owns, and both stop. Decide the interfaces at
+  division time, put them in all four briefs, and nobody blocks.
+- **WHAT IS OUT OF SCOPE**, explicitly. An instance that does not know where its
+  package ends either stops to ask or quietly widens it.
+- **THE DEFINITION OF DONE** for this package — what "finished" means, so the
+  instance knows when to report instead of guessing.
+
+### Same rule for later features
+
+This is not just the first build. **Every subsequent feature brief gets the same
+treatment**: research the feature yourself first, pre-decide the calls, declare
+any new cross-domain contract, state the defaults. The temptation on feature two
+is to write a thin brief because the instances now know the codebase. Resist it —
+they know the code, not your decisions.
 
 ## STEP 5 — The workflow every instance follows
 
 Put this in every brief. It does not change per task.
 
-1. **Receive the brief. Read all of it.**
-2. **RESEARCH FIRST — do not start building.** Two parts, both required:
-   - **The problem:** reproduce it; verify the brief against the actual code.
-     **Briefs are regularly wrong.** An instance that corrects its brief with
-     evidence has done the most valuable thing available to it.
-   - **The approach:** confirm the tool, library or pattern is the current,
-     well-supported way to do this — not what was current at training time.
-     Check the real docs. If the brief names a stale choice, say so.
-3. **Build it.** Prove every guard by watching a test fail before it passes.
-4. **Commit to your own branch. NEVER push.**
-5. **Report through the protocol** — append a turn to your own brief file; give
-   the user one fenced line to relay.
-6. **Only the CTO merges and pushes.**
+**The shape: research hard, then build to the end of the package, then report
+ONCE.** Not research → report → wait → build → report. Every extra round trip
+costs the owner a relay and costs you the context you had loaded.
+
+1. **Receive the brief. Read all of it**, including the decisions and defaults
+   the CTO already made. Most of what you would have asked is answered there.
+
+2. **RESEARCH HARD — this is the phase that earns the rest.** Go deep now so you
+   do not surface later. Three parts, all required:
+   - **The problem:** reproduce it; verify every claim in the brief against the
+     actual code. **Briefs are regularly wrong.** Correcting one with evidence is
+     the most valuable thing you can do.
+   - **The approach:** confirm the library, API or pattern is the **current**
+     well-supported way — not what was current at training time. Read the real
+     docs, check real version numbers, run the thing.
+   - **The whole package:** research everything the package needs *before*
+     building any of it. Finding the second unknown after you have built around
+     the first is what forces a mid-build stop.
+
+3. **BUILD EVERYTHING YOU CAN.** Finish the package. If one item is blocked,
+   **build the other items anyway** and report the blocker at the end with the
+   rest of the work done. Do not stop the whole package on one question.
+
+   Prove every guard by watching a test fail before it passes. Fix the sibling
+   call site. Commit as you go.
+
+4. **Stop mid-package for exactly two reasons — nothing else:**
+   - **You need something you do not own** — a shared type, a route, an env var
+     another domain controls. Build around it if you honestly can; if not, stop.
+   - **The choice is irreversible and the brief did not decide it** — data
+     destroyed, money moved, a public thing published, a contract others depend
+     on. Everything else: **take the default in the brief, or take the most
+     conservative option, note it, and keep building.**
+
+   **Never stop to ask something you can settle by running a command.**
+
+5. **Report ONCE, at the end of the package** — append a turn to your own brief
+   file; give the user one fenced line to relay. Batch every question you have
+   into that single turn. If you must ask three things, ask all three at once,
+   with what you built around each.
+
+6. **Commit to your own branch. NEVER push. Only the CTO merges and pushes.**
 
 ## STEP 6 — The deploy chain
 
