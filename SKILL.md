@@ -1,6 +1,6 @@
 ---
-name: cto
-description: Use when the user brings an app or product idea to build, or asks to set up a multi-instance build team, or types /cto. Splits any build into FOUR standing instances — one always the user interface, three carved from the actual domain — and generates their briefs, the shared ownership map, and the communication protocol they answer on. Also use when an existing project needs its work divided among parallel Claude sessions, or when the user asks how instances should report, commit, or hand off. Every instance researches current tooling before building, commits only to its own branch, and never pushes; only the CTO merges and ships.
+name: squad
+description: "Set up a multi-instance build team for a project. Use ONLY when the user is STARTING something and wants the work divided — a new app or product idea, a big feature needing parallel sessions, or an explicit request to set up instances, briefs, or an ownership map. Also on /squad. Splits the build into four standing instances (one always the user interface, three carved from the domain by coupling) and generates their briefs, the shared ownership map, the communication protocol, and the CTO-to-CTO handover format. DO NOT trigger merely because the user says the word CTO, addresses their CTO, or relays a message to or from an instance — the user calls their main dev session CTO in every project, and running an existing team is not this skill. This skill sets the team up; it does not operate it."
 ---
 
 # CTO — run a build with four instances

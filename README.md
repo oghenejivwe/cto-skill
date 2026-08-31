@@ -1,11 +1,11 @@
-# CTO skill
+# squad — a four-instance build team
 
 A Claude Code skill that turns any app idea into a four-instance build team, and
 keeps them honest.
 
 ## What it does
 
-Drop an idea and run `/cto`. It divides the build into **four standing
+Drop an idea and run `/squad`. It divides the build into **four standing
 instances** — one is always the user interface, the other three are carved from
 the actual domain by **coupling, not by even size** — then generates their
 briefs, the shared ownership map, and the communication protocol they answer on.
@@ -42,7 +42,7 @@ references/handover-template.md   CTO → CTO, for when a session degrades
 
 ## Install
 
-Clone into `~/.claude/skills/cto`, then invoke with `/cto`.
+Clone into `~/.claude/skills/squad`, then invoke with `/squad`.
 
 ## Why four
 
@@ -50,3 +50,10 @@ One session loses fidelity across a whole codebase. Twenty lose the plot. Four i
 enough to specialise and few enough that each instance can read every line it
 owns — which is the point, because every real defect this method has caught was
 found by reading the code, not by running the tests.
+
+## Why it is not called `cto`
+
+The role inside the skill is still **CTO** — that is what you call your main
+dev session. But the *skill* cannot share that name, or every message you
+address to your CTO re-triggers it. This skill **sets a team up**; it does not
+run one. One invocation per project, then it gets out of the way.
