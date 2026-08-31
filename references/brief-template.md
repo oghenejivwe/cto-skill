@@ -52,15 +52,26 @@ relay and costs you the context you had loaded.
 **1. Read the brief — all of it**, including DECISIONS and DEFAULTS below. Most
 of what you would ask is already answered there.
 
-**2. RESEARCH HARD — this phase earns the rest.**
+**2. RESEARCH HARD — this phase earns the rest.** Work the checklist; it is not
+optional and it is not general reading.
+
 - **The problem:** reproduce it. Verify every claim against the actual code.
   **Briefs are regularly wrong.** If you disagree after reading the code, say so
   and say why. That is the job, not insubordination.
-- **The approach:** confirm the library, API or pattern is the CURRENT
-  well-supported way — not what was current at training time. Check real docs and
-  real version numbers. A confident stale answer is worse than a slow one.
+- **⭐ THE VERSION:** for every library, framework, runtime, CLI or service you
+  touch, **find the current release and use it.** Check the registry or official
+  docs — never your memory, which is stale by construction. Record the version
+  and the date you checked.
+  - Do not adopt a pattern from an older major version; the old shape often still
+    compiles while behaving differently.
+  - If the project pins something older, follow the pin and **report the gap** —
+    upgrading is a decision, not a side effect.
+  - "Latest" means current stable, not bleeding edge.
+- **The approach:** confirm this is how it is actually done today. Read real
+  docs. Run the thing. A confident stale answer is worse than a slow one.
 - **The whole package**, before building any of it. Finding the second unknown
   after building around the first is what forces a mid-build stop.
+- **The options** for any choice you face — before you would ask about them.
 
 **3. BUILD EVERYTHING YOU CAN.** Finish the package. If one item is blocked,
 **build the rest anyway** and report the blocker at the end alongside the work
@@ -78,6 +89,17 @@ it go green. Say so in the commit body. Then grep for the sibling call site.
 Everything else: **take the default below, or the most conservative option, note
 it, and keep building.** Never stop to ask what you can settle by running a
 command.
+
+**⭐ NEVER ASK AN ABSTRACT QUESTION.** Research the options before you would ask
+about them, then either decide or ask a question that is already most of the way
+answered. Every question must carry: **the options you considered and how you
+checked them · the constraint that decides between them · your recommendation ·
+and what you will do if nobody answers** — so work never stalls on silence.
+
+*"Which library should we use?"* costs a full round trip and gets the answer you
+could have reached. *"I compared A/B/C against <constraint>; A is out because
+<verified reason>; I recommend C and built the interface so B drops in; say if
+you want B, otherwise C ships"* costs five seconds and can be ignored safely.
 
 **4. Commit to YOUR OWN BRANCH. Never push.**
 - Commit as you go; the message carries the mechanism and the mutation.

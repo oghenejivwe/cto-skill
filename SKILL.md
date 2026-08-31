@@ -84,13 +84,26 @@ yourself.
 
 ## STEP 2 — Research before you divide
 
-**Never brief a stack from memory.** Before writing the briefs, check what the
-current, well-supported choices actually are for this kind of product — framework
-versions, hosting, auth, database, payments, whatever the idea needs. Your
-training data is stale by construction.
+**Never brief a stack from memory.** Your training data is stale by construction,
+and a stack chosen from memory is a decision every instance will quietly
+re-litigate.
 
-Put what you find **in the briefs**, with the reason. "Use X because Y" survives;
-"use X" gets second-guessed by every instance independently.
+Before writing the briefs, settle — with sources:
+
+- **The stack**: framework, hosting, auth, database, payments, queue, whatever
+  the idea needs.
+- **⭐ The version of each**, checked against the registry or official docs
+  today. Record the version and the date. Pin them in the briefs so four
+  instances cannot install four different majors of the same thing.
+- **Why each**, in a line. "Use X because Y" survives contact; "use X" does not.
+- **What you rejected and why.** Otherwise an instance re-researches it, reaches
+  a different answer, and you get a debate instead of a build.
+
+**"Latest" means current stable, not bleeding edge.** Prefer the boring
+well-supported option; the newest release is often the one with no answers on
+the internet yet.
+
+Doing this once, here, saves it being done four times inconsistently.
 
 ## STEP 3 — Divide into four
 
@@ -199,16 +212,35 @@ costs the owner a relay and costs you the context you had loaded.
    the CTO already made. Most of what you would have asked is answered there.
 
 2. **RESEARCH HARD — this is the phase that earns the rest.** Go deep now so you
-   do not surface later. Three parts, all required:
-   - **The problem:** reproduce it; verify every claim in the brief against the
+   do not surface later. Work the checklist below; it is not optional and it is
+   not "general reading".
+
+   **THE RESEARCH CHECKLIST**
+
+   - **The problem.** Reproduce it. Verify every claim in the brief against the
      actual code. **Briefs are regularly wrong.** Correcting one with evidence is
      the most valuable thing you can do.
-   - **The approach:** confirm the library, API or pattern is the **current**
-     well-supported way — not what was current at training time. Read the real
-     docs, check real version numbers, run the thing.
-   - **The whole package:** research everything the package needs *before*
+   - **⭐ THE VERSION.** For every library, framework, runtime, CLI or service you
+     will touch: **find the current release and use it.** Check the registry or
+     the official docs — not your memory, which is stale by construction. Note
+     the version you found and the date you checked.
+     - **Do not adopt a pattern from an older major version.** APIs get replaced
+       and the old shape often still compiles while behaving differently.
+     - **If the project already pins an older version**, say so in your turn with
+       the gap, and follow the pinned one unless the brief says otherwise —
+       upgrading is a decision, not a side effect.
+     - Prefer the boring, well-supported option over the newest thing that
+       exists. "Latest" means current stable, not bleeding edge.
+     - **This is cheap now and expensive later.** A pattern learned from a
+       superseded version surfaces as a subtle runtime bug weeks after it typechecks.
+   - **The approach.** Confirm the pattern is how this is actually done today.
+     Read the real docs. Run the thing. A confident stale answer is worse than a
+     slow one.
+   - **The whole package.** Research everything the package needs *before*
      building any of it. Finding the second unknown after you have built around
      the first is what forces a mid-build stop.
+   - **The options, whenever there is a choice.** See the rule below — you
+     research options *before* you would ask about them, never instead of.
 
 3. **BUILD EVERYTHING YOU CAN.** Finish the package. If one item is blocked,
    **build the other items anyway** and report the blocker at the end with the
@@ -231,6 +263,37 @@ costs the owner a relay and costs you the context you had loaded.
    file; give the user one fenced line to relay. Batch every question you have
    into that single turn. If you must ask three things, ask all three at once,
    with what you built around each.
+
+### ⭐ NEVER ASK AN ABSTRACT QUESTION
+
+**Research the options before you would ask about them.** Then either decide, or
+ask a question that is already most of the way answered.
+
+Not this:
+
+> *"Which queue should we use?"*
+
+This:
+
+> *"Queue: I compared A, B and C against our constraints — <the constraint that
+> actually decides it>. **A** is out because <reason, verified>. **B** and **C**
+> both work; **C** costs less at our volume and B has the better failure
+> semantics. **I recommend C** and have built the interface so either drops in.
+> Say if you want B — otherwise C ships."*
+
+The second costs the CTO five seconds and can even be ignored, because it names
+what happens by default. The first costs a full round trip and produces the same
+answer you could have reached yourself.
+
+**Every question you ask must carry:**
+- the options you actually considered, and how you checked them,
+- the constraint that decides between them,
+- **your recommendation**, and
+- **what you will do if nobody answers** — so work never stalls on silence.
+
+**Only ask when the answer genuinely is not yours to give**: it is irreversible,
+it costs money, it changes what the product means to a user, or it is a contract
+another domain depends on. Anything else, decide it, note it, and move.
 
 6. **Commit to your own branch. NEVER push. Only the CTO merges and pushes.**
 
